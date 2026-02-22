@@ -154,3 +154,16 @@ the line-height in the style.css is triping up the webpage this app is embedded 
 ## 24
 
 Yes, that seems like a good idea. Please do that.
+
+---
+
+## 25
+
+That looks good, and works when the app is embedded.
+However, the webpage now appears with a vertical scrollbar. Please make sure there's no scrollbar unless there is actually a need for it (because the list of MIDI devices is longer than the page height, for instance).
+
+---
+
+## 26
+
+The lower part of the webpage is now white. I guess it's because we're not setting any styles on the body element. If needed to get a dark background, it's OK to set a corresponding style on the body element.
