@@ -21,7 +21,8 @@ midiclock/
 ├── index.html          # Entry page, links CSS and compiled JS
 ├── package.json        # Minimal: typescript dev dependency, build script
 ├── tsconfig.json       # Target ES2020+, outDir: dist, no bundler
-├── midiclock.plan.md   # This plan (kept updated as we plan)
+├── docs/
+│   └── midiclock.plan.md   # This plan (kept updated as we plan)
 ├── src/
 │   ├── main.ts         # App logic: MIDI access, clock handling, BPM, DOM updates
 │   └── style.css       # Dark-mode styles

@@ -175,3 +175,15 @@ The lower part of the webpage is now white. I guess it's because we're not setti
 Center the app title on the page.
 Change the app title to "MIDI Clock by Waveformer".
 Add a text to the upper right, "Source code on github" with a link to the repository, https://github.com/thammer/midimonitor .
+
+---
+
+## 28
+
+Seems like I provided the wrong github repository link, please update the app so that the link to the github repository is https://github.com/thammer/midiclock .
+
+---
+
+## 29
+
+Please move the midiclock.plan.md to the docs directory
