@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>midiclock</title>
+  <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+  <header>
+    <h1>midiclock</h1>
+    <p class="tagline">MIDI clock → BPM</p>
+  </header>
+  <main>
+    <section id="status" class="status" aria-live="polite"></section>
+    <section id="devices" class="devices">
+      <h2>Connected MIDI devices</h2>
+      <ul id="device-list" class="device-list"></ul>
+    </section>
+  </main>
+  <script src="dist/main.js"></script>
+</body>
+</html>
