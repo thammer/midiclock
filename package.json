@@ -2,6 +2,7 @@
   "name": "midiclock",
   "version": "1.0.0",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "build": "node scripts/build.mjs",
     "build:ts": "tsc"

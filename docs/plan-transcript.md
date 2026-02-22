@@ -105,3 +105,33 @@ OK, that sounds good. Go ahead and implement it.
 ## 16
 
 The web app stopped working after you did that latest change. It does display a list of connected devices, but the tempo in BPM isn't updated anymore. What could have gone wrong?
+
+---
+
+## 17
+
+It works now, thanks. I had to restart Chrome)to make it work again. Probably Chrome getting stuck with MIDI stuff, as it sometimes does.
+
+---
+
+## 18
+
+Create a README.md file that gives a brief description of this project and its purpose. Include the fact that this is a vibe-coding experiment, where I do not read any code or update any files manually. All updates are done through chatting with coding agents in the Cursor IDE.
+
+---
+
+## 19
+
+This project is licensed under the MIT license. Please add the required file(s) to indicate this. Follow the standard practice used by github.
+
+---
+
+## 20
+
+Yes, please do that.
+
+---
+
+## 21
+
+The copyright in the MIT license file should be for Thomas Hammer
