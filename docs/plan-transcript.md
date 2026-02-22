@@ -167,3 +167,11 @@ However, the webpage now appears with a vertical scrollbar. Please make sure the
 ## 26
 
 The lower part of the webpage is now white. I guess it's because we're not setting any styles on the body element. If needed to get a dark background, it's OK to set a corresponding style on the body element.
+
+---
+
+## 27
+
+Center the app title on the page.
+Change the app title to "MIDI Clock by Waveformer".
+Add a text to the upper right, "Source code on github" with a link to the repository, https://github.com/thammer/midimonitor .

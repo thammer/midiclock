@@ -24,8 +24,10 @@ body {
 }
 
 #midiclock-app header {
+  position: relative;
   padding: 2rem 1.5rem;
   border-bottom: 1px solid var(--border);
+  text-align: center;
 }
 
 #midiclock-app h1 {
@@ -39,6 +41,23 @@ body {
   margin: 0.25rem 0 0;
   font-size: 0.95rem;
   color: var(--text-muted);
+}
+
+#midiclock-app .source-link {
+  position: absolute;
+  top: 0.75rem;
+  right: 1rem;
+  font-size: 0.9rem;
+}
+
+#midiclock-app .source-link a {
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+#midiclock-app .source-link a:hover {
+  color: var(--accent);
+  text-decoration: underline;
 }
 
 #midiclock-app main {
