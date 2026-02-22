@@ -135,3 +135,10 @@ Yes, please do that.
 ## 21
 
 The copyright in the MIT license file should be for Thomas Hammer
+
+---
+
+## 22
+
+Look at the file "C:\source\midimonitor\index.html" and pay attention to the comments marked "For www.waveformer.net". Add the same comments in the index.html file in this midiclock repository.
+These comments are used when building the complete www.waveformer.net site, where they are replaced with some html for top-level menus and such.
