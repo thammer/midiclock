@@ -187,3 +187,9 @@ Seems like I provided the wrong github repository link, please update the app so
 ## 29
 
 Please move the midiclock.plan.md to the docs directory
+
+---
+
+## 30
+
+Add an AGENTS.md file suitable for this project. Make sure it also contains the relevant knowledge I learnt while prompting.
