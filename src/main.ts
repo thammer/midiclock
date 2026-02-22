@@ -11,21 +11,36 @@ const BPM_UPDATE_THROTTLE_MS = 150;
 interface DeviceState {
   input: MIDIInput;
   lastTimestamp: number;
-  intervals: number[];
+  intervalBuffer: number[];
+  intervalIndex: number;
+  intervalCount: number;
+  intervalSum: number;
   bpm: number | null;
-  pendingUpdate: boolean;
+}
+
+interface DeviceRow {
+  container: HTMLLIElement;
+  nameEl: HTMLSpanElement;
+  bpmEl: HTMLSpanElement;
 }
 
 let midiAccess: MIDIAccess | null = null;
 const deviceState = new Map<string, DeviceState>();
+const deviceRows = new Map<string, DeviceRow>();
+const dirtyDeviceIds = new Set<string>();
 let rafScheduled = false;
 let lastDomUpdate = 0;
+let lastStatusMessage = "";
+let lastStatusError = false;
 
 const statusEl = document.getElementById("status") as HTMLElement;
 const deviceListEl = document.getElementById("device-list") as HTMLUListElement;
 
 function setStatus(message: string, isError = false): void {
   if (!statusEl) return;
+  if (message === lastStatusMessage && isError === lastStatusError) return;
+  lastStatusMessage = message;
+  lastStatusError = isError;
   statusEl.textContent = message;
   statusEl.classList.toggle("error", isError);
 }
@@ -36,9 +51,11 @@ function getOrCreateDeviceState(input: MIDIInput): DeviceState {
     state = {
       input,
       lastTimestamp: 0,
-      intervals: [],
+      intervalBuffer: new Array<number>(INTERVAL_BUFFER_SIZE),
+      intervalIndex: 0,
+      intervalCount: 0,
+      intervalSum: 0,
       bpm: null,
-      pendingUpdate: false,
     };
     deviceState.set(input.id, state);
   }
@@ -50,22 +67,32 @@ function onMidiMessage(input: MIDIInput, event: MIDIMessageEvent): void {
   if (!data || data.length === 0 || data[0] !== MIDI_CLOCK) return;
 
   const state = getOrCreateDeviceState(input);
-  const now = performance.now();
+  const now =
+    typeof event.timeStamp === "number" && event.timeStamp > 0
+      ? event.timeStamp
+      : performance.now();
 
   if (state.lastTimestamp > 0) {
     const delta = now - state.lastTimestamp;
-    state.intervals.push(delta);
-    if (state.intervals.length > INTERVAL_BUFFER_SIZE) {
-      state.intervals.shift();
-    }
-    if (state.intervals.length >= 2) {
-      const avg =
-        state.intervals.reduce((a, b) => a + b, 0) / state.intervals.length;
-      state.bpm = 60000 / (avg * PPQ);
+    if (delta > 0 && Number.isFinite(delta)) {
+      if (state.intervalCount < INTERVAL_BUFFER_SIZE) {
+        state.intervalBuffer[state.intervalIndex] = delta;
+        state.intervalSum += delta;
+        state.intervalCount += 1;
+      } else {
+        state.intervalSum -= state.intervalBuffer[state.intervalIndex];
+        state.intervalBuffer[state.intervalIndex] = delta;
+        state.intervalSum += delta;
+      }
+      state.intervalIndex = (state.intervalIndex + 1) % INTERVAL_BUFFER_SIZE;
+      if (state.intervalCount >= 2) {
+        const avg = state.intervalSum / state.intervalCount;
+        state.bpm = 60000 / (avg * PPQ);
+      }
     }
   }
   state.lastTimestamp = now;
-  state.pendingUpdate = true;
+  dirtyDeviceIds.add(input.id);
 
   scheduleRender();
 }
@@ -77,13 +104,10 @@ function scheduleRender(): void {
 }
 
 function renderDeviceList(force = false): void {
+  if (!deviceListEl) return;
   rafScheduled = false;
   const now = performance.now();
-  let hasPending = false;
-  deviceState.forEach((state) => {
-    if (state.pendingUpdate) hasPending = true;
-  });
-  if (!hasPending && !force) return;
+  if (!force && dirtyDeviceIds.size === 0) return;
 
   if (!force && now - lastDomUpdate < BPM_UPDATE_THROTTLE_MS) {
     rafScheduled = true;
@@ -91,31 +115,68 @@ function renderDeviceList(force = false): void {
     return;
   }
   lastDomUpdate = now;
-  deviceState.forEach((state) => {
-    state.pendingUpdate = false;
+
+  if (force) {
+    const activeIds = new Set(deviceState.keys());
+    deviceRows.forEach((_, id) => {
+      if (!activeIds.has(id)) removeDeviceRow(id);
+    });
+    deviceState.forEach((state, id) => {
+      ensureDeviceRow(id, state);
+      updateDeviceRowBpm(id, state);
+    });
+    dirtyDeviceIds.clear();
+    return;
+  }
+
+  dirtyDeviceIds.forEach((id) => {
+    const state = deviceState.get(id);
+    if (!state) return;
+    ensureDeviceRow(id, state);
+    updateDeviceRowBpm(id, state);
   });
+  dirtyDeviceIds.clear();
+}
 
+function ensureDeviceRow(id: string, state: DeviceState): void {
   if (!deviceListEl) return;
-
-  deviceListEl.innerHTML = "";
-  deviceState.forEach((state) => {
+  let row = deviceRows.get(id);
+  const currentName = state.input.name || state.input.id || "Unnamed device";
+  if (!row) {
     const li = document.createElement("li");
     li.className = "device-card";
     const nameSpan = document.createElement("span");
     nameSpan.className = "device-name";
-    nameSpan.textContent = state.input.name || state.input.id || "Unnamed device";
     const bpmSpan = document.createElement("span");
-    bpmSpan.className = "device-bpm";
-    if (state.bpm != null) {
-      bpmSpan.textContent = state.bpm.toFixed(1) + " BPM";
-    } else {
-      bpmSpan.textContent = "— BPM";
-      bpmSpan.classList.add("inactive");
-    }
+    bpmSpan.className = "device-bpm inactive";
     li.appendChild(nameSpan);
     li.appendChild(bpmSpan);
     deviceListEl.appendChild(li);
-  });
+    row = { container: li, nameEl: nameSpan, bpmEl: bpmSpan };
+    deviceRows.set(id, row);
+  }
+  if (row.nameEl.textContent !== currentName) {
+    row.nameEl.textContent = currentName;
+  }
+}
+
+function updateDeviceRowBpm(id: string, state: DeviceState): void {
+  const row = deviceRows.get(id);
+  if (!row) return;
+  if (state.bpm != null) {
+    row.bpmEl.textContent = state.bpm.toFixed(1) + " BPM";
+    row.bpmEl.classList.remove("inactive");
+  } else {
+    row.bpmEl.textContent = "— BPM";
+    row.bpmEl.classList.add("inactive");
+  }
+}
+
+function removeDeviceRow(id: string): void {
+  const row = deviceRows.get(id);
+  if (!row) return;
+  row.container.remove();
+  deviceRows.delete(id);
 }
 
 function attachInput(input: MIDIInput): void {
@@ -133,6 +194,8 @@ function detachInput(id: string): void {
     state.input.onmidimessage = null;
   }
   deviceState.delete(id);
+  dirtyDeviceIds.delete(id);
+  removeDeviceRow(id);
 }
 
 function refreshInputs(): void {
@@ -154,7 +217,7 @@ function refreshInputs(): void {
   renderDeviceList(true);
 
   const count = currentIds.size;
-    if (count === 0) {
+  if (count === 0) {
     setStatus("No MIDI devices found. Connect a device and refresh.");
   } else {
     setStatus(

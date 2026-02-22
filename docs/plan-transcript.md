@@ -199,3 +199,16 @@ Add an AGENTS.md file suitable for this project. Make sure it also contains the 
 ## 31
 
 The AGENTS.md file should also contain something about the importance of the app being performant. When calculating the BPM it is important that the browser or the page isn't spending time rendering the page or doing other tasks that might impact the accuracy of the BPM calculations.
+
+---
+
+## 32
+
+When you consider this new section in AGENTS.md about performance and timing accuracy, are there any changes you would like to make in the code to make the page more performant?
+Please summarize the changes in the chat and do not implement them until I have reviewed them.
+
+---
+
+## 33
+
+Yes, please do that.
