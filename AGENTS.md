@@ -45,6 +45,14 @@ Guidance for coding agents working on `midiclock`.
 - Reattach `onmidimessage` handlers during input refresh (input objects may be replaced while IDs remain stable).
 - BPM updates depend on receiving MIDI clock status byte `0xF8`.
 
+## Performance and timing accuracy
+
+- Treat BPM calculation and MIDI clock handling as timing-sensitive.
+- Keep work inside MIDI message handlers minimal and deterministic.
+- Avoid unnecessary DOM writes/reflows; batch or throttle UI updates where possible.
+- Do not add heavy rendering, animations, or expensive synchronous tasks on the main thread that could delay clock message processing.
+- Preserve high-resolution timing-based BPM calculation logic (using message arrival deltas) and avoid introducing slower timer-based approximations.
+
 ## Troubleshooting notes
 
 - If devices are listed but BPM does not update, verify clock messages are arriving and handlers are attached.

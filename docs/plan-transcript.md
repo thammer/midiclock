@@ -193,3 +193,9 @@ Please move the midiclock.plan.md to the docs directory
 ## 30
 
 Add an AGENTS.md file suitable for this project. Make sure it also contains the relevant knowledge I learnt while prompting.
+
+---
+
+## 31
+
+The AGENTS.md file should also contain something about the importance of the app being performant. When calculating the BPM it is important that the browser or the page isn't spending time rendering the page or doing other tasks that might impact the accuracy of the BPM calculations.
