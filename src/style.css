@@ -1,50 +1,49 @@
-:root {
+#midiclock-app {
   --bg: #0d0d0d;
   --surface: #1a1a1a;
   --text: #e0e0e0;
   --text-muted: #888;
   --accent: #4ecdc4;
   --border: #2a2a2a;
-}
-
-* {
   box-sizing: border-box;
-}
-
-body {
   margin: 0;
   min-height: 100vh;
   background: var(--bg);
   color: var(--text);
   font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  line-height: 1.5;
 }
 
-header {
+#midiclock-app *,
+#midiclock-app *::before,
+#midiclock-app *::after {
+  box-sizing: inherit;
+}
+
+#midiclock-app header {
   padding: 2rem 1.5rem;
   border-bottom: 1px solid var(--border);
 }
 
-h1 {
+#midiclock-app h1 {
   margin: 0;
   font-size: 1.75rem;
   font-weight: 600;
   color: var(--accent);
 }
 
-.tagline {
+#midiclock-app .tagline {
   margin: 0.25rem 0 0;
   font-size: 0.95rem;
   color: var(--text-muted);
 }
 
-main {
+#midiclock-app main {
   padding: 1.5rem;
   max-width: 42rem;
   margin: 0 auto;
 }
 
-.status {
+#midiclock-app .status {
   margin-bottom: 1.5rem;
   padding: 0.75rem 1rem;
   background: var(--surface);
@@ -54,11 +53,11 @@ main {
   color: var(--text-muted);
 }
 
-.status.error {
+#midiclock-app .status.error {
   color: #e57373;
 }
 
-.devices h2 {
+#midiclock-app .devices h2 {
   margin: 0 0 1rem;
   font-size: 1rem;
   font-weight: 600;
@@ -67,7 +66,7 @@ main {
   letter-spacing: 0.05em;
 }
 
-.device-list {
+#midiclock-app .device-list {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -76,7 +75,7 @@ main {
   gap: 0.75rem;
 }
 
-.device-card {
+#midiclock-app .device-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -86,18 +85,18 @@ main {
   border-radius: 8px;
 }
 
-.device-name {
+#midiclock-app .device-name {
   font-weight: 500;
   color: var(--text);
 }
 
-.device-bpm {
+#midiclock-app .device-bpm {
   font-size: 1.25rem;
   font-weight: 600;
   color: var(--accent);
 }
 
-.device-bpm.inactive {
+#midiclock-app .device-bpm.inactive {
   color: var(--text-muted);
   font-weight: 400;
 }

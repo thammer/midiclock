@@ -11,17 +11,19 @@
 </head>
 <body>
   <!-- For www.waveformer.net <div w3-include-html="../navbar.html"></div> -->
-  <header>
-    <h1>midiclock</h1>
-    <p class="tagline">MIDI clock → BPM</p>
-  </header>
-  <main>
-    <section id="status" class="status" aria-live="polite"></section>
-    <section id="devices" class="devices">
-      <h2>Connected MIDI devices</h2>
-      <ul id="device-list" class="device-list"></ul>
-    </section>
-  </main>
+  <div id="midiclock-app">
+    <header>
+      <h1>midiclock</h1>
+      <p class="tagline">MIDI clock → BPM</p>
+    </header>
+    <main>
+      <section id="status" class="status" aria-live="polite"></section>
+      <section id="devices" class="devices">
+        <h2>Connected MIDI devices</h2>
+        <ul id="device-list" class="device-list"></ul>
+      </section>
+    </main>
+  </div>
   <script src="dist/main.js"></script>
   <!-- For www.waveformer.net <script>includeHTML();</script> -->
 </body>

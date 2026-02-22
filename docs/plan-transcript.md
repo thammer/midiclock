@@ -142,3 +142,15 @@ The copyright in the MIT license file should be for Thomas Hammer
 
 Look at the file "C:\source\midimonitor\index.html" and pay attention to the comments marked "For www.waveformer.net". Add the same comments in the index.html file in this midiclock repository.
 These comments are used when building the complete www.waveformer.net site, where they are replaced with some html for top-level menus and such.
+
+---
+
+## 23
+
+the line-height in the style.css is triping up the webpage this app is embedded in. please remove it, while maintaining the UI look and feel as much as possible.
+
+---
+
+## 24
+
+Yes, that seems like a good idea. Please do that.
